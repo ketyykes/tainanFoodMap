@@ -67,5 +67,9 @@ function printMarket(data) {
     // console.log(categoryShop);
 }
 
+var firstTabEl = document.querySelector('#nav-tab');
+  var firstTab = new bootstrap.Tab(firstTabEl);
+
+
 
 

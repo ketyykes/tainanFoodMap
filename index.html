@@ -6,34 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>台南美食地圖</title>
     <link rel="stylesheet" href="style/css/all.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
     <style>
-        html, body {
-            height: 100%;
-            width: 100%;
-        }
-        #map{
-            height: 100%;
-            width: 100%;
-        }
+       
         .marker-cluster-small {
             background-color: rgba(181, 226, 140, 0.6);
         }
-
         .marker-cluster-small div {
             background-color: rgba(110, 204, 57, 0.6);
         }
-
         .marker-cluster-medium {
             background-color: rgba(241, 211, 87, 0.6);
         }
-
         .marker-cluster-medium div {
             background-color: rgba(240, 194, 12, 0.6);
         }
-
         .marker-cluster-large {
             background-color: rgba(253, 156, 115, 0.6);
         }
@@ -41,35 +31,96 @@
         .marker-cluster-large div {
             background-color: rgba(241, 128, 23, 0.6);
         }
-
         .marker-cluster {
             background-clip: padding-box;
             border-radius: 20px;
         }
-
         .marker-cluster div {
             width: 30px;
             height: 30px;
             margin-left: 5px;
             margin-top: 5px;
-
             text-align: center;
             border-radius: 15px;
             font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
         }
-
         .marker-cluster span {
             line-height: 30px;
         }
+        .hello{
+            position: absolute;
+            top: 100px;
+            left: 0;
+            z-index: 2000;
+        }
+        .btn-close{
+            filter:invert(1);
+            opacity:1;
+        }
+    
     </style>
 </head>
 <body>
-    <div id="map"></div>
+        <button class="btn btn-primary position-absolute hello" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasTop" data-bs-backdrop="false">Toggle top offcanvas</button>
+        <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+            <div class="offcanvas-header bg-blue-700 ps-4">
+                <h5 class="offcanvas-title text-white fw-bold " id="offcanvasScrollingLabel">台南美食地圖</h5>
+              <button type="button" class="btn-close text-reset text-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body bg-orange-300">
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" >
+                        <label class="btn btn-blue-700 d-block text-white fw-bold" for="option1">區域查詢</label>
+                        <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                        <label class="btn btn-blue-700 d-block my-2 text-white fw-bold" for="option2">美食類型查詢</label>
+                    </div>
+                    <div class="col">
+                        <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+                        <label class="btn btn-blue-700 d-block text-white fw-bold" for="option3">服務類型查詢</label>
+                        <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
+                        <label class="btn btn-blue-700 d-block my-2 text-white fw-bold" for="option4">商家名稱查詢</label>
+                    </div>
+                </div>
+                <select class="d-none form-select form-select-lg mb-3" >
+                    <option selected>----請選擇區域----</option>
+                    <option value="1">依區域</option>
+                </select>
+                <select class="d-none form-select form-select-lg mb-3" >
+                    <option selected>----請選擇美食類型----</option>
+                    <option value="1">依美食</option>
+                </select>
+                <select class=" d-none form-select form-select-lg mb-3" >
+                    <option selected disabled>----請選擇服務類型</option>
+                    <option value="1">依服務</option>
+                </select>
+                <div class="d-flex ">
+                    <input type="text" class="form-control"><input type="submit" class="btn btn-outline-secondary">
+                </div>
+                <ul class="list-group list-group-flush mt-4 " id="get-ul">
+                    <li class="list-group-item">
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title"><i class="fab fa-accessible-icon"></i>和興冰果部</h5>
+                            <p class="card-text"><i class="fas fa-map-marker-alt"></i>731 臺南市後壁區菁寮里菁寮46號</p>
+                            <p>週二~週日09:00~17:00，週一休息</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                          </div>
+                        </div></li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                </ul>
+            </div>
+        </div>
+        <div id="map"></div>
+ 
+    
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
     </script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="js/all.js"></script>
 </body>
 </html>
