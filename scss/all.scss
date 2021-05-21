@@ -14,9 +14,13 @@
 @import "../node_modules/bootstrap/scss/utilities";
 
 $custom-colors: (
+  "orange-400": $orange-400,
   "orange-300": $orange-300,
+  "orange-100": $orange-100,
+  "orange-700": $orange-700,
   "blue-400" :$blue-400,
   "blue-700" :$blue-700,
+  "blue-800" :$blue-800,
 );
 $utilities: map-merge(
   $utilities,
@@ -27,15 +31,37 @@ $utilities: map-merge(
       values: map-merge(
         $theme-colors,
         (
+          "orange-100": $orange-100,
           "blue-700": $blue-700,
           "blue-400": $blue-400,
+          "blue-800" :$blue-800,
           "orange-300": $orange-300,
+          "orange-400": $orange-400,
+          "orange-700": $orange-700,
           "transparent": transparent
+        )
+      )
+    ), "color": (
+      property: color,
+      class: text,
+      values: map-merge(
+        $theme-colors,
+        (
+          "orange-100": $orange-100,
+          "blue-700" :$blue-800,
+          "blue-800" :$blue-800,
+          "blue-400": $blue-400,
+          "orange-300": $orange-300,
+          "orange-400": $orange-400,
+          "orange-700": $orange-700,
         )
       )
     ),
   )
 );
+
+
+
 
 // Merge the maps
 $theme-colors: map-merge($theme-colors, $custom-colors);
@@ -87,11 +113,14 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 html,body{
     width: 100%;
     overflow: hidden;
+    font-family:'PingFangSC-Regular','Microsoft JhengHei', sans-serif; 
 }
 #map{
     height: 100vh;
 }
-
+.card-h{
+  height: 50vh;
+}
 @media (max-width:768px){
   .offcanvas-end{
     height: 75vh;
