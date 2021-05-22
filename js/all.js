@@ -1,6 +1,4 @@
 var url ="../json/shops_zh-tw.json";
-// var url ="https://opengov.tainan.gov.tw:443/OpenApi/api/service/Get/bb7ba3ff-1974-4400-9a41-2aa803045550";
-// let viewData =[];
 fetch(url, {
     method: "GET",
     mode: "cors",
@@ -67,8 +65,58 @@ function printMarket(data) {
     // console.log(categoryShop);
 }
 
-var firstTabEl = document.querySelector('#nav-tab');
-  var firstTab = new bootstrap.Tab(firstTabEl);
+//get 
+
+const getSearchType = document.querySelector('.search-type');
+const getChoiceArea = document.getElementById('choice-area');
+const getChoiceFood = document.getElementById('choice-food');
+const getChoiceService = document.getElementById('choice-service');
+const getEnterStore = document.getElementById('enter-store');
+
+getSearchType.addEventListener('click',function(e){
+    // console.log(e.target.tagName);
+    function addDNone(){
+        getChoiceArea.classList.add("d-none");
+        getChoiceFood.classList.add("d-none");
+        getChoiceService.classList.add("d-none");
+        getEnterStore.classList.add("d-none");
+    }
+    if(e.target.tagName!="LABEL"&&e.target.tagName!="INPUT"){
+       return;
+    }
+    console.log(e.target.value);
+    switch (e.target.value) {
+        case "district-search":{
+            addDNone();
+            getChoiceArea.classList.remove("d-none");
+        break;
+        }
+           
+        case "food-search":{
+            addDNone();
+            getChoiceFood.classList.remove("d-none");
+            break;
+        }
+        case "service-search":{
+            addDNone();
+            getChoiceService.classList.remove("d-none");
+            break;
+        }
+        case "store-search":{
+            addDNone();
+            getEnterStore.classList.remove("d-none");
+            break;
+        }
+      }
+  
+
+
+})
+
+
+
+
+
 
 
 

@@ -57,6 +57,7 @@
             filter:invert(1);
             opacity:1;
         }
+        
     
     </style>
 </head>
@@ -68,36 +69,40 @@
               <button type="button" class="btn-close text-reset text-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body bg-blue-700">
-                <div class="row mb-3">
-                    <div class="col">
-                        <input type="radio" class="btn-check " name="options" id="option1" autocomplete="off" >
-                        <label class="btn btn-orange-100 d-block text-blue-800 fw-bold" for="option1">區域查詢</label>
-                        <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-                        <label class="btn btn-orange-100 d-block my-2 text-blue-800 fw-bold" for="option2">美食類型查詢</label>
-                    </div>
-                    <div class="col">
-                        <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-                        <label class="btn btn-orange-100 d-block text-blue-800 fw-bold" for="option3">服務類型查詢</label>
-                        <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
-                        <label class="btn btn-orange-100 d-block my-2 text-blue-800 fw-bold" for="option4">商家名稱查詢</label>
+                <div class="search-type">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <input type="radio" class="btn-check " name="search-type" id="option1" autocomplete="off" value="district-search">
+                            <label class="btn btn-outline-orange-400 d-block text-blue-700 fw-bold radio-search" for="option1">區域查詢</label>
+                            <input type="radio" class="btn-check" name="search-type" id="option2" autocomplete="off"  value="food-search">
+                            <label class="btn btn-outline-orange-400 d-block my-2 text-blue-700 fw-bold radio-search" for="option2">美食類型查詢</label>
+                        </div>
+                        <div class="col">
+                            <input type="radio" class="btn-check" name="search-type" id="option3" autocomplete="off" value="service-search">
+                            <label class="btn btn-outline-orange-400 d-block text-blue-700 fw-bold radio-search" for="option3"  >服務類型查詢</label>
+                            <input type="radio" class="btn-check" name="search-type" id="option4" autocomplete="off" value="store-search">
+                            <label class="btn btn-outline-orange-400 d-block my-2 text-blue-700 fw-bold radio-search" for="option4">商家名稱查詢</label>
+                        </div>
                     </div>
                 </div>
-                <select class="d-none form-select form-select-lg mb-3" >
+                
+                <select class="form-select form-select-lg mb-3" id="choice-area">
                     <option selected>----請選擇區域----</option>
                     <option value="1">依區域</option>
                 </select>
-                <select class="d-none form-select form-select-lg mb-3" >
+                <select class="d-none form-select form-select-lg mb-3"id="choice-food" >
                     <option selected>----請選擇美食類型----</option>
                     <option value="1">依美食</option>
                 </select>
-                <select class="  form-select form-select-lg mb-3" >
+                <select class="d-none form-select form-select-lg mb-3" id="choice-service" >
                     <option selected disabled>----請選擇服務類型</option>
                     <option value="1">依服務</option>
                 </select>
-                <div class="d-flex d-none ">
-                    <input type="text" class="form-control"><input type="submit" class="btn btn-outline-secondary">
+                <div class="d-flex d-none "id="enter-store">
+                    <input type="text" class="form-control">
+                    <input type="submit" class="btn btn-outline-orange-100">
                 </div>
-                <div class="overflow-auto card-h p-2">
+                <div class="overflow-auto data-place p-2">
                     <div class="bg-light rounded-pill mt-2 p-2 d-flex flex-column align-items-center">
                         <h5 class="text-center fs-5 fw-bold text-blue-800 border-bottom border-dark p-1 w-50"><i class="fas fa-store me-1"></i>和興冰果部</h5>
                         <div class="text-center">
