@@ -73,22 +73,21 @@
                     <div class="row mb-3">
                         <div class="col">
                             <input type="radio" class="btn-check " name="search-type" id="option1" autocomplete="off" value="district-search">
-                            <label class="btn btn-outline-orange-400 d-block text-blue-700 fw-bold radio-search" for="option1">區域查詢</label>
+                            <label class="btn btn-outline-orange-400 text-blue-700 d-block fw-bold radio-search" for="option1">區域查詢</label>
                             <input type="radio" class="btn-check" name="search-type" id="option2" autocomplete="off"  value="food-search">
-                            <label class="btn btn-outline-orange-400 d-block my-2 text-blue-700 fw-bold radio-search" for="option2">美食類型查詢</label>
+                            <label class="btn btn-outline-orange-400 text-blue-700 d-block my-2 fw-bold radio-search" for="option2">美食類型查詢</label>
                         </div>
                         <div class="col">
                             <input type="radio" class="btn-check" name="search-type" id="option3" autocomplete="off" value="service-search">
-                            <label class="btn btn-outline-orange-400 d-block text-blue-700 fw-bold radio-search" for="option3"  >服務類型查詢</label>
+                            <label class="btn btn-outline-orange-400 text-blue-700 d-block fw-bold radio-search" for="option3"  >服務類型查詢</label>
                             <input type="radio" class="btn-check" name="search-type" id="option4" autocomplete="off" value="store-search">
-                            <label class="btn btn-outline-orange-400 d-block my-2 text-blue-700 fw-bold radio-search" for="option4">商家名稱查詢</label>
+                            <label class="btn btn-outline-orange-400 text-blue-700 d-block my-2 fw-bold radio-search" for="option4">商家名稱查詢</label>
                         </div>
                     </div>
                 </div>
                 
                 <select class="form-select form-select-lg mb-3" id="choice-area">
-                    <option selected>----請選擇區域----</option>
-                    <option value="1">依區域</option>
+                    <option selected disabled>----請選擇區域----</option>
                 </select>
                 <select class="d-none form-select form-select-lg mb-3"id="choice-food" >
                     <option selected>----請選擇美食類型----</option>
@@ -98,12 +97,12 @@
                     <option selected disabled>----請選擇服務類型</option>
                     <option value="1">依服務</option>
                 </select>
-                <div class="d-flex d-none "id="enter-store">
-                    <input type="text" class="form-control">
-                    <input type="submit" class="btn btn-outline-orange-100">
+                <div class="d-flex d-none justify-content-between mb-3"id="enter-store">
+                    <input type="text" class="form-control w-75 ">
+                    <button class="btn btn-orange-300 rounded-circle">搜尋</button>
                 </div>
-                <div class="overflow-auto data-place p-2">
-                    <div class="bg-light rounded-pill mt-2 p-2 d-flex flex-column align-items-center">
+                <ul class="overflow-auto data-place p-2">
+                    <!-- <div class="bg-light rounded-pill mt-2 p-2 d-flex flex-column align-items-center">
                         <h5 class="text-center fs-5 fw-bold text-blue-800 border-bottom border-dark p-1 w-50"><i class="fas fa-store me-1"></i>和興冰果部</h5>
                         <div class="text-center">
                             <i class="fas fa-map-marker-alt text-danger pe-1"></i>
@@ -112,28 +111,8 @@
                             <i class=" far fa-clock text-warning"></i>
                             <span class="text-orange-700">週二~週日09:00~17:00，週一休息</span>
                         </div>
-                    </div>
-                    <div class="bg-light rounded-pill mt-2 p-2 d-flex flex-column align-items-center">
-                        <h5 class="text-center fs-5 fw-bold text-blue-800 border-bottom border-dark p-1 w-50"><i class="fas fa-store me-1"></i>和興冰果部</h5>
-                        <div class="text-center">
-                            <i class="fas fa-map-marker-alt text-danger pe-1"></i>
-                            <span class="text-orange-700">731 臺南市後壁區菁寮里菁寮46號</span>
-                            <br>
-                            <i class=" far fa-clock text-warning"></i>
-                            <span class="text-orange-700">週二~週日09:00~17:00，週一休息</span>
-                        </div>
-                    </div>
-                    <div class="bg-light rounded-pill mt-2 p-2 d-flex flex-column align-items-center">
-                        <h5 class="text-center fs-5 fw-bold text-blue-800 border-bottom border-dark p-1 w-50"><i class="fas fa-store me-1"></i>和興冰果部</h5>
-                        <div class="text-center">
-                            <i class="fas fa-map-marker-alt text-danger pe-1"></i>
-                            <span class="text-orange-700">731 臺南市後壁區菁寮里菁寮46號</span>
-                            <br>
-                            <i class=" far fa-clock text-warning"></i>
-                            <span class="text-orange-700">週二~週日09:00~17:00，週一休息</span>
-                        </div>
-                    </div>
-                </div>
+                    </div> -->
+                </ul>
                 
             </div>
         </div>

@@ -1,4 +1,6 @@
-var url ="../json/shops_zh-tw.json";
+let AllDataAry = [];
+let partOfDistrctary ;
+let url ="../json/shops_zh-tw.json";
 fetch(url, {
     method: "GET",
     mode: "cors",
@@ -12,14 +14,11 @@ fetch(url, {
 })
 .then(function (result) {
     console.log(result);
+    AllDataAry = result;
     printMarket(result);
-
+    processData(result);
 });
-
-
-
-
-var map = L.map('map', {
+let map = L.map('map', {
     center: [22.9971587, 120.2103894],
     zoom: 16
 });
@@ -40,16 +39,21 @@ let greenIcon = new L.Icon({
 });
 //new出一個icon從以下url
 
-var markers = new L.MarkerClusterGroup().addTo(map);
+let markers = new L.MarkerClusterGroup().addTo(map);
 
 
+
+  let districtAry = [];
 function printMarket(data) {
-    for (let i = 0; i < data.length; i++) {
-        if(data[i].lat==null||data[i].long==null){
-            continue;
-        }
-        markers.addLayer(L.marker([data[i].lat, data[i].long], { icon: greenIcon }).bindPopup(`<h1>名稱:${data[i].name}</h1>`));
-    }
+    // for (let i = 0; i < data.length; i++) {
+    //     if(data[i].lat==null||data[i].long==null){
+    //         continue;
+    //     }
+    //     markers.addLayer(L.marker([data[i].lat, data[i].long], { icon: greenIcon }).bindPopup(`<h1>名稱:${data[i].name}</h1>`));
+    // }
+
+
+
     // console.log(data[i].lat);
     // console.log(data[2].category[0]);
     // console.log(data[2].category[1]);
@@ -65,16 +69,16 @@ function printMarket(data) {
     // console.log(categoryShop);
 }
 
-//get 
+//切換按鈕顯示或消失
 
 const getSearchType = document.querySelector('.search-type');
 const getChoiceArea = document.getElementById('choice-area');
 const getChoiceFood = document.getElementById('choice-food');
 const getChoiceService = document.getElementById('choice-service');
 const getEnterStore = document.getElementById('enter-store');
+const getDataPlace = document.querySelector('.data-place');
 
 getSearchType.addEventListener('click',function(e){
-    // console.log(e.target.tagName);
     function addDNone(){
         getChoiceArea.classList.add("d-none");
         getChoiceFood.classList.add("d-none");
@@ -84,14 +88,12 @@ getSearchType.addEventListener('click',function(e){
     if(e.target.tagName!="LABEL"&&e.target.tagName!="INPUT"){
        return;
     }
-    console.log(e.target.value);
     switch (e.target.value) {
         case "district-search":{
             addDNone();
             getChoiceArea.classList.remove("d-none");
         break;
         }
-           
         case "food-search":{
             addDNone();
             getChoiceFood.classList.remove("d-none");
@@ -108,11 +110,80 @@ getSearchType.addEventListener('click',function(e){
             break;
         }
       }
-  
-
-
 })
 
+function processData(data){
+    let districtAry = [];
+    function getAllDistrictName(data){
+        const afterDataSet = new Set();
+        data.forEach((item)=>{
+            if( afterDataSet.has(item.district)==false){afterDataSet.add(item.district)}
+            
+        })
+        districtAry = Array.from(afterDataSet);
+        return districtAry;
+    }
+    districtAry =getAllDistrictName(data);
+    districtAry.forEach(function(el){
+        getChoiceArea.innerHTML += `<option value="${el}">${el}</option>`
+    })
+}
+getChoiceArea.addEventListener('change',renderInMap);
+function renderInMap(e){
+    getDataPlace.innerHTML = "";
+     partOfDistrctary = AllDataAry.filter((el)=>{
+         return el.district ===e.target.value
+    })
+    for (let i = 0; i < partOfDistrctary.length; i++) {
+        if(partOfDistrctary[i].lat==null||partOfDistrctary[i].long==null){
+            continue;
+        }
+        let position =[partOfDistrctary[i].lat, partOfDistrctary[i].long];
+        markers.addLayer(
+            L.marker(position, { icon: greenIcon }).bindPopup(
+                `<h1>名稱:${partOfDistrctary[i].name}</h1>`
+    
+                )
+            
+            
+            );
+    }
+    let pos = [partOfDistrctary[0].lat, partOfDistrctary[0].long];
+    map.setView(pos, 16, {
+        animate: true,
+        duration: 1
+    });
+    renderInDataPlace(partOfDistrctary);
+}
+function renderInDataPlace(data){
+    data.forEach(function(el,idx){
+        getDataPlace.innerHTML += `
+        <li class="rounded-pill mt-2 p-2 d-flex flex-column align-items-center" data-num=${idx}>
+            <h5 class="text-center fs-5 fw-bold text-blue-800 border-bottom border-dark p-1 w-50"><i class="fas fa-store me-1"></i>${el.name}</h5>
+            <div class="text-center">
+                <i class="fas fa-map-marker-alt text-danger pe-1"></i>
+                <span class="text-orange-700">${el.address}</span>
+                <br>
+                <i class="far fa-clock text-warning"></i>
+                <span class="text-orange-700">${el.open_time}</span>
+            </div>
+        </li>
+    `
+    })
+}
+
+getDataPlace.addEventListener('click',function(e){
+    let getDataSetNum = e.target.dataset.num;
+    let position = [partOfDistrctary[getDataSetNum].lat, partOfDistrctary[getDataSetNum].long];
+    map.setView(position, 16, {
+        animate: true,
+        duration: 1
+    });
+    console.log(    e.target.nodeName);
+    console.log(    e.target.dataset.num);
+
+    // console.log(this);
+})
 
 
 

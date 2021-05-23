@@ -120,16 +120,29 @@ html,body{
 }
 .data-place{
   height: 50vh;
+  li{
+    cursor: pointer;
+    background-color: white;
+    &:hover{
+      background-color: $orange-100;
+    }
+    *{
+      pointer-events: none;
+    }
+  }
 }
 .radio-search{
+  background-color:white;
   &:hover{
-    background-color: $orange-300;
+    background-color: $orange-400;
   }
-  background-color:$orange-100;
 }
-
+#enter-store>input{
+  height: 48px;
+}
 @media (max-width:768px){
   .offcanvas-end{
     height: 75vh;
   }
 }
+

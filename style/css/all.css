@@ -12267,12 +12267,29 @@ html, body {
   height: 50vh;
 }
 
-.radio-search {
+.data-place li {
+  cursor: pointer;
+  background-color: white;
+}
+
+.data-place li:hover {
   background-color: #ffe5d0;
 }
 
+.data-place li * {
+  pointer-events: none;
+}
+
+.radio-search {
+  background-color: white;
+}
+
 .radio-search:hover {
-  background-color: #feb272;
+  background-color: #fd9843;
+}
+
+#enter-store > input {
+  height: 48px;
 }
 
 @media (max-width: 768px) {
