@@ -1,6 +1,9 @@
 let AllDataAry = [];
 let partOfDistrctary ;
-let url ="../json/shops_zh-tw.json";
+
+// console.log(dataJson);
+let url ="/json/shops_zh-tw.json";
+// let url =""
 fetch(url, {
     method: "GET",
     mode: "cors",
@@ -18,6 +21,7 @@ fetch(url, {
     printMarket(result);
     processData(result);
 });
+
 let map = L.map('map', {
     center: [22.9971587, 120.2103894],
     zoom: 16
