@@ -1,6 +1,6 @@
-let AllDataAry = [];
-let partOfDistrctary ;
-
+let allDataAry = [];
+let partOfDistrctAry =[] ;
+let includeService = [];
 // console.log(dataJson);
 let url ="json/shops_zh-tw.json";
 // let url =""
@@ -15,8 +15,10 @@ fetch(url, {
     console.log(response);
 })
 .then(function (result) {
-    console.log(result);
-    AllDataAry = result;
+    
+    result.forEach((element) =>{
+        allDataAry.push(element);
+    })
     printMarket(result);
     processData(result);
 });
@@ -117,52 +119,77 @@ getSearchType.addEventListener('click',function(e){
 
 function processData(data){
     let districtAry = [];
+    let servicesAry =[];
     function getAllDistrictName(data){
         const afterDataSet = new Set();
         data.forEach((item)=>{
-            if( afterDataSet.has(item.district)==false){afterDataSet.add(item.district)}
-            
+            if( afterDataSet.has(item.district)==false){
+                afterDataSet.add(item.district)
+            }
         })
-        districtAry = Array.from(afterDataSet);
-        return districtAry;
+        return Array.from(afterDataSet);
     }
     districtAry =getAllDistrictName(data);
-    districtAry.forEach(function(el){
-        getChoiceArea.innerHTML += `<option value="${el}">${el}</option>`
+    districtAry.forEach(function(districtName){
+            getChoiceArea.innerHTML += `<option value="${districtName}">${districtName}</option>`
+        })
+
+    function getAllServices(data){
+        const afterDataSet = new Set();
+        data.forEach(function(el){
+            if(el.services.length !==0){
+                el.services.find(function(e){
+                    if( afterDataSet.has(e)==false){
+                        afterDataSet.add(e)
+                    }
+                })
+            }
+        })
+        return Array.from(afterDataSet);
+    }
+    servicesAry = getAllServices(data);
+    servicesAry.forEach((serviceName)=>{
+        getChoiceService.innerHTML+=`<option value="${serviceName}">${serviceName}</option>`
     })
+
+    includeService = allDataAry.filter((el)=>{
+      return el.services.indexOf(servicesAry[1])!=-1;
+    })
+    console.log(servicesAry[1]);
+    console.log(includeService);
 }
 getChoiceArea.addEventListener('change',renderInMap);
 function renderInMap(e){
     getDataPlace.innerHTML = "";
-     partOfDistrctary = AllDataAry.filter((el)=>{
+     partOfDistrctAry = allDataAry.filter((el)=>{
          return el.district ===e.target.value
     })
-    for (let i = 0; i < partOfDistrctary.length; i++) {
-        if(partOfDistrctary[i].lat==null||partOfDistrctary[i].long==null){
+    for (let i = 0; i < partOfDistrctAry.length; i++) {
+        if(partOfDistrctAry[i].lat==null||partOfDistrctAry[i].long==null){
             continue;
         }
-        let position =[partOfDistrctary[i].lat, partOfDistrctary[i].long];
+        let position =[partOfDistrctAry[i].lat, partOfDistrctAry[i].long];
         markers.addLayer(
             L.marker(position, { icon: greenIcon }).bindPopup(
-                `<h1>名稱:${partOfDistrctary[i].name}</h1>`
+                `<h1>名稱:${partOfDistrctAry[i].name}</h1>`
     
                 )
             
             
             );
     }
-    let pos = [partOfDistrctary[0].lat, partOfDistrctary[0].long];
+    let pos = [partOfDistrctAry[0].lat, partOfDistrctAry[0].long];
     map.setView(pos, 16, {
         animate: true,
         duration: 1
     });
-    renderInDataPlace(partOfDistrctary);
+    renderInDataPlace(partOfDistrctAry);
 }
 function renderInDataPlace(data){
     data.forEach(function(el,idx){
         getDataPlace.innerHTML += `
-        <li class="rounded-pill mt-2 p-2 d-flex flex-column align-items-center" data-num=${idx}>
-            <h5 class="text-center fs-5 fw-bold text-blue-800 border-bottom border-dark p-1 w-50"><i class="fas fa-store me-1"></i>${el.name}</h5>
+        <li class="rounded-pill mt-2 px-4 py-1 d-flex flex-column align-items-center" data-num=${idx}>
+            <h5 class="text-center fs-5 fw-bold text-blue-800 border-bottom border-dark p-1"><i class="fas fa-store me-1"></i>${el.name}</h5>
             <div class="text-center">
                 <i class="fas fa-map-marker-alt text-danger pe-1"></i>
                 <span class="text-orange-700">${el.address}</span>
@@ -177,7 +204,7 @@ function renderInDataPlace(data){
 
 getDataPlace.addEventListener('click',function(e){
     let getDataSetNum = e.target.dataset.num;
-    let position = [partOfDistrctary[getDataSetNum].lat, partOfDistrctary[getDataSetNum].long];
+    let position = [partOfDistrctAry[getDataSetNum].lat, partOfDistrctAry[getDataSetNum].long];
     map.setView(position, 16, {
         animate: true,
         duration: 1
@@ -187,11 +214,3 @@ getDataPlace.addEventListener('click',function(e){
 
     // console.log(this);
 })
-
-
-
-
-
-
-
-
