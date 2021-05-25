@@ -2,7 +2,7 @@ let AllDataAry = [];
 let partOfDistrctary ;
 
 // console.log(dataJson);
-let url ="../../json/shops_zh-tw.json";
+let url ="tainanFoodMap/json/shops_zh-tw.json";
 // let url =""
 fetch(url, {
     method: "GET",
