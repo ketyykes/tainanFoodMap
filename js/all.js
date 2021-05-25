@@ -2,11 +2,10 @@ let AllDataAry = [];
 let partOfDistrctary ;
 
 // console.log(dataJson);
-let url ="/json/shops_zh-tw.json";
+let url ="../json/shops_zh-tw.json";
 // let url =""
 fetch(url, {
     method: "GET",
-    mode: "cors",
     header: new Headers({
       "Content-Type": "text/json",
     }),
