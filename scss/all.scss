@@ -145,4 +145,22 @@ html,body{
     height: 75vh;
   }
 }
+.leaflet-popup-content{
+  .card{
+    h5, p{
+        font-family: 'Noto Serif TC', serif;
+    }
+    p{
+        margin: 0;
+        // font-size: 1rem;
+    }
+    .info-responsive{
+        overflow-y: auto;
+        max-height: 150px;
+        // &::-webkit-scrollbar {
+        //     display: none;
+        // }
+    }
 
+  }
+}

@@ -12297,4 +12297,17 @@ html, body {
     height: 75vh;
   }
 }
+
+.leaflet-popup-content .card h5, .leaflet-popup-content .card .h5, .leaflet-popup-content .card p {
+  font-family: 'Noto Serif TC', serif;
+}
+
+.leaflet-popup-content .card p {
+  margin: 0;
+}
+
+.leaflet-popup-content .card .info-responsive {
+  overflow-y: auto;
+  max-height: 150px;
+}
 /*# sourceMappingURL=all.css.map */

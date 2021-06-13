@@ -118,64 +118,173 @@ getSearchType.addEventListener('click',function(e){
 })
 
 function processData(data){
-    let districtAry = [];
-    let servicesAry =[];
-    function getAllDistrictName(data){
-        const afterDataSet = new Set();
-        data.forEach((item)=>{
-            if( afterDataSet.has(item.district)==false){
-                afterDataSet.add(item.district)
-            }
-        })
-        return Array.from(afterDataSet);
-    }
-    districtAry =getAllDistrictName(data);
-    districtAry.forEach(function(districtName){
-            getChoiceArea.innerHTML += `<option value="${districtName}">${districtName}</option>`
-        })
+    // let districtAry = [];
+    // let servicesAry =[];
+    // let foodAry = [];
+    console.log(data);
 
-    function getAllServices(data){
+
+    function putInOption(data,getDOM,elObj){
         const afterDataSet = new Set();
         data.forEach(function(el){
-            if(el.services.length !==0){
-                el.services.find(function(e){
+            if(Array.isArray(el[elObj])){
+                el[elObj].find(function(e){
                     if( afterDataSet.has(e)==false){
                         afterDataSet.add(e)
                     }
                 })
+            }else{
+                if( afterDataSet.has(el[elObj])==false){
+                    afterDataSet.add(el[elObj]);
+                }
             }
         })
-        return Array.from(afterDataSet);
+        Array.from(afterDataSet).forEach((objContentName)=>{
+            getDOM.innerHTML+=`<option value="${objContentName}">${objContentName}</option>`
+        })
     }
-    servicesAry = getAllServices(data);
-    servicesAry.forEach((serviceName)=>{
-        getChoiceService.innerHTML+=`<option value="${serviceName}">${serviceName}</option>`
-    })
+    putInOption(data,getChoiceFood,'category');
+    putInOption(data,getChoiceService,'services');
+    putInOption(data,getChoiceArea,'district');
 
-    includeService = allDataAry.filter((el)=>{
-      return el.services.indexOf(servicesAry[1])!=-1;
-    })
-    console.log(servicesAry[1]);
-    console.log(includeService);
+
+    // function getAllDistrictName(data){
+    //     const afterDataSet = new Set();
+    //     data.forEach((item)=>{
+
+    //         if( afterDataSet.has(item.district)==false){
+    //             afterDataSet.add(item.district)
+    //         }
+    //     })
+    //     return Array.from(afterDataSet);
+    // }
+    // districtAry =getAllDistrictName(data);
+    // districtAry.forEach(function(districtName){
+    //         getChoiceArea.innerHTML += `<option value="${districtName}">${districtName}</option>`
+    //     })
+
+    // servicesAry = getAllServices(data);
+    // console.log(servicesAry);
+    // servicesAry.forEach((foodTypeName)=>{
+    //     getChoiceService.innerHTML+=`<option value="${foodTypeName}">${foodTypeName}</option>`
+    // });
+
+    // includeService = allDataAry.filter((el)=>{
+    //   return el.services.indexOf(servicesAry[1])!=-1;
+    // })
+    // console.log(servicesAry[1]);
+    // console.log(includeService);
+
+    // function getAllFoodType(data){
+    //     const afterDataSet = new Set();
+    //     data.forEach(function(el){
+    //         if(el.category.length !==0){
+    //             el.category.find(function(e){
+    //                 if( afterDataSet.has(e)==false){
+    //                     afterDataSet.add(e)
+    //                 }
+    //             })
+    //         }
+    //     })
+    //     console.log(afterDataSet);
+    //     return Array.from(afterDataSet);
+    // }
+    // foodAry= getAllFoodType(data);
+
+    // foodAry.forEach((serviceName)=>{
+    //     getChoiceFood.innerHTML+=`<option value="${serviceName}">${serviceName}</option>`
+    // })
+
 }
 getChoiceArea.addEventListener('change',renderInMap);
+getChoiceService.addEventListener('change',servicesRenderInMap);
+function servicesRenderInMap(e){
+    getDataPlace.innerHTML ='';
+    filterAfterAddEvent("services",e);
+    renderInDataPlace(partOfDistrctAry);
+}
+function filterAfterAddEvent(elObj,e){
+    if(elObj=='services'){
+        // console.log(allDataAry[897].services);
+        // let aa = allDataAry[897].services.find(el=>{return el=="餐飲"});
+        // console.log(aa);
+
+        partOfDistrctAry =allDataAry.filter((el)=>{
+            let findServices =  el[elObj].find(el=>{
+                return el===e.target.value;
+            })
+            return findServices;
+       })  
+    }else if(elObj=='district'){
+        partOfDistrctAry = allDataAry.filter((el)=>{
+            return el[elObj] ===e.target.value
+       })
+    }
+}
 function renderInMap(e){
     getDataPlace.innerHTML = "";
-     partOfDistrctAry = allDataAry.filter((el)=>{
-         return el.district ===e.target.value
-    })
+    markers.clearLayers();
+
+
+    filterAfterAddEvent('district',e);
+    console.log(partOfDistrctAry);
     for (let i = 0; i < partOfDistrctAry.length; i++) {
         if(partOfDistrctAry[i].lat==null||partOfDistrctAry[i].long==null){
             continue;
         }
+        function makeNotYetSuppyly(number,placeParameterStr){
+            if(partOfDistrctAry[number][placeParameterStr]==null||partOfDistrctAry[number][placeParameterStr]==""){
+                partOfDistrctAry[number][placeParameterStr]='尚未提供';
+            }
+        }
+        makeNotYetSuppyly(i,"tel")
+        makeNotYetSuppyly(i,"summary")
+        makeNotYetSuppyly(i,"open_time")
+        
         let position =[partOfDistrctAry[i].lat, partOfDistrctAry[i].long];
         markers.addLayer(
             L.marker(position, { icon: greenIcon }).bindPopup(
-                `<h1>名稱:${partOfDistrctAry[i].name}</h1>`
-    
+                `<div class="card border-0">
+                    <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-store me-1 text-blue-800"></i>${partOfDistrctAry[i].name}</h5>
+                        <div class="info-responsive">
+                            <p class="mt-1">
+                            <i class="fas fa-info-circle pe-1 text-blue-800"></i>${partOfDistrctAry[i].summary}
+                            </p>
+                        </div>
+                        <p class="mt-1">
+                            <i class="fas fa-map-marker-alt text-danger pe-1"></i>
+                            ${partOfDistrctAry[i].address}
+                        </p>
+                        <p class="mt-1">
+                            <i class="fas fa-phone pe-1">
+                            </i>${partOfDistrctAry[i].tel}
+                        </p>
+                        <p class="mt-1">
+                            <i class="far fa-clock text-warning pe-1">
+                            </i>
+                            ${partOfDistrctAry[i].open_time}
+                        </p>
+                        ${partOfDistrctAry[i].services.length!=0 ?
+                            `<p class="mt-1">
+                                <i class="fas fa-concierge-bell pe-1"></i>${ partOfDistrctAry[i].services.map((el)=>`${el}`)}
+                            </p>`:''
+                        }
+                        ${partOfDistrctAry[i].category.length!=0 ?
+                            `<p class="mt-1">
+                            <i class="far fa-bell pe-1"></i>${ partOfDistrctAry[i].category.map((el)=>`${el}`)}
+                            </p>`:''
+                        }
+            
+                        
+
+                    
+                       
+                    </div>
+                </div>`,{
+                    maxWidth: 280
+                }
                 )
-            
-            
             );
     }
     let pos = [partOfDistrctAry[0].lat, partOfDistrctAry[0].long];
@@ -187,8 +296,9 @@ function renderInMap(e){
 }
 function renderInDataPlace(data){
     data.forEach(function(el,idx){
+        if(el.open_time==false){el.open_time="尚未提供"};
         getDataPlace.innerHTML += `
-        <li class="rounded-pill mt-2 px-4 py-1 d-flex flex-column align-items-center" data-num=${idx}>
+        <li class="rounded mt-2 px-2 py-2 d-flex flex-column align-items-center" data-num=${idx}>
             <h5 class="text-center fs-5 fw-bold text-blue-800 border-bottom border-dark p-1"><i class="fas fa-store me-1"></i>${el.name}</h5>
             <div class="text-center">
                 <i class="fas fa-map-marker-alt text-danger pe-1"></i>
@@ -203,6 +313,7 @@ function renderInDataPlace(data){
 }
 
 getDataPlace.addEventListener('click',function(e){
+    if(e.target.nodeName=="UL"){return}
     let getDataSetNum = e.target.dataset.num;
     let position = [partOfDistrctAry[getDataSetNum].lat, partOfDistrctAry[getDataSetNum].long];
     map.setView(position, 16, {
@@ -211,6 +322,4 @@ getDataPlace.addEventListener('click',function(e){
     });
     console.log(    e.target.nodeName);
     console.log(    e.target.dataset.num);
-
-    // console.log(this);
 })
