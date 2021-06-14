@@ -262,12 +262,12 @@ function renderPopUp(){
                         </p>
                         ${partOfDistrctAry[i].services.length!=0 ?
                             `<p class="mt-1">
-                                <i class="fas fa-concierge-bell pe-1"></i>${ partOfDistrctAry[i].services.map((el)=>`${el}`)}
+                                <i class="fas fa-concierge-bell text-yellow-400 pe-1"></i>${ partOfDistrctAry[i].services.map((el)=>`${el}`)}
                             </p>`:''
                         }
                         ${partOfDistrctAry[i].category.length!=0 ?
                             `<p class="mt-1">
-                            <i class="fas fa-tag pe-1"></i>${ partOfDistrctAry[i].category.map((el)=>`${el}`)}
+                            <i class="fas fa-tag text-teal-400 pe-1"></i>${ partOfDistrctAry[i].category.map((el)=>`${el}`)}
                             </p>`:''
                         }
                     </div>
@@ -346,10 +346,10 @@ function renderInDataPlace(data,searchType){
                 <i class="far fa-clock text-warning"></i>
                 <span class="text-orange-700">${el.open_time}</span>
                 ${searchType=="services" ?
-                    `<br><i class="fas fa-concierge-bell pe-1"></i>${el.services}`:''
+                    `<br><i class="fas fa-concierge-bell text-yellow-400 pe-1"></i>${el.services}`:''
                 }
                 ${searchType=="category" ?
-                `<br><i class="fas fa-tag pe-1"></i>${el.category}` :'' 
+                `<br><i class="fas fa-tag text-teal-400 pe-1"></i>${el.category}` :'' 
                 }
             </div>
         </li>
