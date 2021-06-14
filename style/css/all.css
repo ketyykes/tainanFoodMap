@@ -12298,6 +12298,13 @@ html, body {
   }
 }
 
+.open-offcanvas {
+  position: absolute;
+  top: 100px;
+  left: 10px;
+  z-index: 1000;
+}
+
 .leaflet-popup-content .card h5, .leaflet-popup-content .card .h5, .leaflet-popup-content .card p {
   font-family: 'Noto Serif TC', serif;
 }

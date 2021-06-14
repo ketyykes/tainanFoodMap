@@ -1,6 +1,7 @@
 let allDataAry = [];
 let partOfDistrctAry =[] ;
 let includeService = [];
+let seachTypeStr = '';
 // console.log(dataJson);
 let url ="json/shops_zh-tw.json";
 // let url =""
@@ -46,8 +47,6 @@ let greenIcon = new L.Icon({
 
 let markers = new L.MarkerClusterGroup().addTo(map);
 
-
-
   let districtAry = [];
 function printMarket(data) {
     // for (let i = 0; i < data.length; i++) {
@@ -83,6 +82,15 @@ const getChoiceService = document.getElementById('choice-service');
 const getEnterStore = document.getElementById('enter-store');
 const getDataPlace = document.querySelector('.data-place');
 
+
+getEnterStore.children[0].addEventListener('keyup',function(e) {
+    if(e.code==108){
+    }
+})
+getEnterStore.children[1]
+
+
+console.log(getDataPlace);
 getSearchType.addEventListener('click',function(e){
     function addDNone(){
         getChoiceArea.classList.add("d-none");
@@ -93,24 +101,31 @@ getSearchType.addEventListener('click',function(e){
     if(e.target.tagName!="LABEL"&&e.target.tagName!="INPUT"){
        return;
     }
+    //清除所選擇的內容且所有select添加d-none
+    getDataPlace.innerHTML = "";
+    getChoiceArea.value=getChoiceArea.children[0].value;
+    getChoiceFood.value=getChoiceFood.children[0].value;
+    getChoiceService.value=getChoiceService.children[0].value;
+    getEnterStore.value='';
+    addDNone();
     switch (e.target.value) {
         case "district-search":{
-            addDNone();
+            seachTypeStr="district";
             getChoiceArea.classList.remove("d-none");
         break;
         }
         case "food-search":{
-            addDNone();
+            seachTypeStr="category";
             getChoiceFood.classList.remove("d-none");
             break;
         }
         case "service-search":{
-            addDNone();
+            seachTypeStr="services";
             getChoiceService.classList.remove("d-none");
             break;
         }
         case "store-search":{
-            addDNone();
+            seachTypeStr="store";
             getEnterStore.classList.remove("d-none");
             break;
         }
@@ -123,30 +138,10 @@ function processData(data){
     // let foodAry = [];
     console.log(data);
 
-
-    function putInOption(data,getDOM,elObj){
-        const afterDataSet = new Set();
-        data.forEach(function(el){
-            if(Array.isArray(el[elObj])){
-                el[elObj].find(function(e){
-                    if( afterDataSet.has(e)==false){
-                        afterDataSet.add(e)
-                    }
-                })
-            }else{
-                if( afterDataSet.has(el[elObj])==false){
-                    afterDataSet.add(el[elObj]);
-                }
-            }
-        })
-        Array.from(afterDataSet).forEach((objContentName)=>{
-            getDOM.innerHTML+=`<option value="${objContentName}">${objContentName}</option>`
-        })
-    }
+    
     putInOption(data,getChoiceFood,'category');
     putInOption(data,getChoiceService,'services');
     putInOption(data,getChoiceArea,'district');
-
 
     // function getAllDistrictName(data){
     //     const afterDataSet = new Set();
@@ -190,44 +185,44 @@ function processData(data){
     //     return Array.from(afterDataSet);
     // }
     // foodAry= getAllFoodType(data);
-
     // foodAry.forEach((serviceName)=>{
     //     getChoiceFood.innerHTML+=`<option value="${serviceName}">${serviceName}</option>`
     // })
 
 }
-getChoiceArea.addEventListener('change',renderInMap);
-getChoiceService.addEventListener('change',servicesRenderInMap);
-function servicesRenderInMap(e){
-    getDataPlace.innerHTML ='';
-    filterAfterAddEvent("services",e);
-    renderInDataPlace(partOfDistrctAry);
-}
-function filterAfterAddEvent(elObj,e){
-    if(elObj=='services'){
-        // console.log(allDataAry[897].services);
-        // let aa = allDataAry[897].services.find(el=>{return el=="餐飲"});
-        // console.log(aa);
 
-        partOfDistrctAry =allDataAry.filter((el)=>{
-            let findServices =  el[elObj].find(el=>{
-                return el===e.target.value;
+//從資料選出不重複的值例如區域、服務然後印製各種查詢的選單至下拉式選單
+function putInOption(data,getDOM,elObj){
+    const afterDataSet = new Set();
+    data.forEach(function(el){
+        if(Array.isArray(el[elObj])){
+            el[elObj].find(function(e){
+                if( afterDataSet.has(e)==false){
+                    afterDataSet.add(e)
+                }
             })
-            return findServices;
-       })  
-    }else if(elObj=='district'){
-        partOfDistrctAry = allDataAry.filter((el)=>{
-            return el[elObj] ===e.target.value
-       })
-    }
+        }else{
+            if( afterDataSet.has(el[elObj])==false){
+                afterDataSet.add(el[elObj]);
+            }
+        }
+    })
+    Array.from(afterDataSet).forEach((objContentName)=>{
+        getDOM.innerHTML+=`<option value="${objContentName}">${objContentName}</option>`
+    })
 }
-function renderInMap(e){
-    getDataPlace.innerHTML = "";
-    markers.clearLayers();
+
+//監聽按下某區或者某服務的時候的觸發事件
+getChoiceArea.addEventListener('change',renderInMap);
+getChoiceService.addEventListener('change',renderInMap);
+getChoiceFood.addEventListener('change',renderInMap);
 
 
-    filterAfterAddEvent('district',e);
-    console.log(partOfDistrctAry);
+
+
+//將服務錨點印製到地圖上面且形成popup
+function renderPopUp(){
+    markers.clearLayers(); //清除先前在地圖上的標記
     for (let i = 0; i < partOfDistrctAry.length; i++) {
         if(partOfDistrctAry[i].lat==null||partOfDistrctAry[i].long==null){
             continue;
@@ -272,29 +267,73 @@ function renderInMap(e){
                         }
                         ${partOfDistrctAry[i].category.length!=0 ?
                             `<p class="mt-1">
-                            <i class="far fa-bell pe-1"></i>${ partOfDistrctAry[i].category.map((el)=>`${el}`)}
+                            <i class="fas fa-tag pe-1"></i>${ partOfDistrctAry[i].category.map((el)=>`${el}`)}
                             </p>`:''
                         }
-            
-                        
-
-                    
-                       
                     </div>
-                </div>`,{
-                    maxWidth: 280
-                }
-                )
-            );
+                </div>`,{maxWidth: 280}
+            )
+        )
     }
-    let pos = [partOfDistrctAry[0].lat, partOfDistrctAry[0].long];
-    map.setView(pos, 16, {
-        animate: true,
-        duration: 1
-    });
-    renderInDataPlace(partOfDistrctAry);
+    //移動到第零筆資料位置
+    
+    for(let i=0; i < partOfDistrctAry.length; i++){
+            if(partOfDistrctAry[i].lat==null){
+                continue;
+            }else{
+                let pos = [partOfDistrctAry[i].lat, partOfDistrctAry[i].long];
+                map.setView(pos, 16, {
+                    animate: true,
+                    duration: 1
+                });
+                break;
+            }
+            
+    }
+    
 }
-function renderInDataPlace(data){
+
+
+
+//將對應的服務或區域過濾出來組成陣列是partOfDistrctAry
+function filterAfterAddEvent(elObj,e){
+    if(elObj=='services'){
+        partOfDistrctAry =allDataAry.filter((el)=>{
+            let findServices =  el[elObj].find(el=>{
+                return el===e.target.value;
+            })
+            return findServices;
+       })  
+    }else if(elObj=='district'){
+        partOfDistrctAry = allDataAry.filter((el)=>{
+            return el[elObj] ===e.target.value
+       })
+    }else if(elObj=='category'){
+        // console.log(category);
+        partOfDistrctAry =allDataAry.filter((el)=>{
+            let findServices =  el[elObj].find(el=>{
+                return el===e.target.value;
+            })
+            return findServices;
+       })  
+    }
+
+}
+
+
+
+//監聽事件觸發某區域、服務或是美食類型所做的事情
+function renderInMap(e){
+    getDataPlace.innerHTML = "";
+    filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
+    console.log(partOfDistrctAry);
+    // filterAfterAddEvent("services",e);
+    // console.log(partOfDistrctAry,"district");
+    renderPopUp();
+    renderInDataPlace(partOfDistrctAry,seachTypeStr);
+}
+//將區域標記印製在ul上面
+function renderInDataPlace(data,searchType){
     data.forEach(function(el,idx){
         if(el.open_time==false){el.open_time="尚未提供"};
         getDataPlace.innerHTML += `
@@ -306,12 +345,19 @@ function renderInDataPlace(data){
                 <br>
                 <i class="far fa-clock text-warning"></i>
                 <span class="text-orange-700">${el.open_time}</span>
+                ${searchType=="services" ?
+                    `<br><i class="fas fa-concierge-bell pe-1"></i>${el.services}`:''
+                }
+                ${searchType=="category" ?
+                `<br><i class="fas fa-tag pe-1"></i>${el.category}` :'' 
+                }
             </div>
         </li>
     `
     })
 }
 
+//當ul印製出的內容被點選時地圖移向該錨點
 getDataPlace.addEventListener('click',function(e){
     if(e.target.nodeName=="UL"){return}
     let getDataSetNum = e.target.dataset.num;
@@ -320,6 +366,4 @@ getDataPlace.addEventListener('click',function(e){
         animate: true,
         duration: 1
     });
-    console.log(    e.target.nodeName);
-    console.log(    e.target.dataset.num);
 })

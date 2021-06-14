@@ -47,12 +47,7 @@
         .marker-cluster span {
             line-height: 30px;
         }
-        .hello{
-            position: absolute;
-            top: 100px;
-            left: 0;
-            z-index: 2000;
-        }
+    
         .btn-close{
             filter:invert(1);
             opacity:1;
@@ -62,7 +57,7 @@
     </style>
 </head>
 <body>
-        <button class="btn btn-primary position-absolute hello" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasTop" data-bs-backdrop="false">Toggle top offcanvas</button>
+        <button class="btn btn-primary position-absolute open-offcanvas " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasTop" data-bs-backdrop="false"><i class="fas fa-bars"></i></button>
         <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
             <div class="offcanvas-header bg-blue-700 ps-4">
                 <h5 class="offcanvas-title text-light fw-bold " id="offcanvasScrollingLabel">台南美食地圖</h5>

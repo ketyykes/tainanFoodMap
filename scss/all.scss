@@ -145,6 +145,12 @@ html,body{
     height: 75vh;
   }
 }
+.open-offcanvas{
+  position: absolute;
+  top: 100px;
+  left: 10px;
+  z-index: 1000;
+}
 .leaflet-popup-content{
   .card{
     h5, p{
@@ -152,15 +158,10 @@ html,body{
     }
     p{
         margin: 0;
-        // font-size: 1rem;
     }
     .info-responsive{
         overflow-y: auto;
         max-height: 150px;
-        // &::-webkit-scrollbar {
-        //     display: none;
-        // }
     }
-
   }
 }
