@@ -83,11 +83,32 @@ const getEnterStore = document.getElementById('enter-store');
 const getDataPlace = document.querySelector('.data-place');
 
 
-getEnterStore.children[0].addEventListener('keyup',function(e) {
-    if(e.code==108){
-    }
+// getEnterStore.addEventListener('submit',function(e) {
+//     e.preventDefault();
+//     console.log("hello");
+//     filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
+//     console.log(partOfDistrctAry);
+//     renderPopUp();
+//     renderInDataPlace(partOfDistrctAry,seachTypeStr);
+// })
+getEnterStore.children[1].addEventListener('mouseup',function(e) {
+    filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
+    console.log(partOfDistrctAry);
+    renderPopUp();
+    renderInDataPlace(partOfDistrctAry,seachTypeStr);
 })
-getEnterStore.children[1]
+
+// function searchStoreByName(str){
+//     let reg = new RegExp(str);
+//     // console.log(str);
+//     allDataAry.forEach(function(el,idx){
+//         if(reg.test(el.name)){
+//             console.log(el);
+//         }
+//     })
+
+// }
+
 
 
 console.log(getDataPlace);
@@ -125,7 +146,7 @@ getSearchType.addEventListener('click',function(e){
             break;
         }
         case "store-search":{
-            seachTypeStr="store";
+            seachTypeStr="name";
             getEnterStore.classList.remove("d-none");
             break;
         }
@@ -220,6 +241,7 @@ getChoiceFood.addEventListener('change',renderInMap);
 
 
 
+
 //將服務錨點印製到地圖上面且形成popup
 function renderPopUp(){
     markers.clearLayers(); //清除先前在地圖上的標記
@@ -288,9 +310,7 @@ function renderPopUp(){
                 });
                 break;
             }
-            
     }
-    
 }
 
 
@@ -302,11 +322,11 @@ function filterAfterAddEvent(elObj,e){
             let findServices =  el[elObj].find(el=>{
                 return el===e.target.value;
             })
-            return findServices;
+            return findServices&&el.lat!==null&&el.long!==null;
        })  
     }else if(elObj=='district'){
         partOfDistrctAry = allDataAry.filter((el)=>{
-            return el[elObj] ===e.target.value
+            return el[elObj] ===e.target.value&&el.lat!==null&&el.long!==null
        })
     }else if(elObj=='category'){
         // console.log(category);
@@ -314,8 +334,16 @@ function filterAfterAddEvent(elObj,e){
             let findServices =  el[elObj].find(el=>{
                 return el===e.target.value;
             })
-            return findServices;
+            return findServices&&el.lat!==null&&el.long!==null;
        })  
+    }else if (elObj=='name'){
+        let str = getEnterStore.children[0].value;
+        let reg = new RegExp(str);
+        partOfDistrctAry = allDataAry.filter(function(el,idx){
+            return (reg.test(el.name)&&el.lat!==null&&el.long!==null);
+        })
+        renderPopUp();
+        renderInDataPlace(partOfDistrctAry,seachTypeStr);
     }
 
 }
@@ -324,7 +352,6 @@ function filterAfterAddEvent(elObj,e){
 
 //監聽事件觸發某區域、服務或是美食類型所做的事情
 function renderInMap(e){
-    getDataPlace.innerHTML = "";
     filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
     console.log(partOfDistrctAry);
     // filterAfterAddEvent("services",e);
@@ -334,6 +361,7 @@ function renderInMap(e){
 }
 //將區域標記印製在ul上面
 function renderInDataPlace(data,searchType){
+    getDataPlace.innerHTML = "";
     data.forEach(function(el,idx){
         if(el.open_time==false){el.open_time="尚未提供"};
         getDataPlace.innerHTML += `
