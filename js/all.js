@@ -238,10 +238,6 @@ getChoiceArea.addEventListener('change',renderInMap);
 getChoiceService.addEventListener('change',renderInMap);
 getChoiceFood.addEventListener('change',renderInMap);
 
-
-
-
-
 //將服務錨點印製到地圖上面且形成popup
 function renderPopUp(){
     markers.clearLayers(); //清除先前在地圖上的標記
@@ -345,7 +341,6 @@ function filterAfterAddEvent(elObj,e){
         renderPopUp();
         renderInDataPlace(partOfDistrctAry,seachTypeStr);
     }
-
 }
 
 
