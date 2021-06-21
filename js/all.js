@@ -2,7 +2,7 @@ let allDataAry = [];
 let partOfDistrctAry =[] ;
 let includeService = [];
 let seachTypeStr = '';
-// console.log(dataJson);
+let enterStoreStatus = 0;
 let url ="json/shops_zh-tw.json";
 // let url =""
 fetch(url, {
@@ -82,32 +82,26 @@ const getChoiceService = document.getElementById('choice-service');
 const getEnterStore = document.getElementById('enter-store');
 const getDataPlace = document.querySelector('.data-place');
 
+const getOption1 = document.getElementById('option1');
+getOption1.checked = true;
+seachTypeStr = 'district';
 
-// getEnterStore.addEventListener('submit',function(e) {
-//     e.preventDefault();
-//     console.log("hello");
-//     filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
-//     console.log(partOfDistrctAry);
-//     renderPopUp();
-//     renderInDataPlace(partOfDistrctAry,seachTypeStr);
-// })
-getEnterStore.children[1].addEventListener('mouseup',function(e) {
-    filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
-    console.log(partOfDistrctAry);
-    renderPopUp();
-    renderInDataPlace(partOfDistrctAry,seachTypeStr);
-})
+getEnterStore.children[0].addEventListener('compositionend',function(e){
+    enterStoreStatus=1;
+});
 
-// function searchStoreByName(str){
-//     let reg = new RegExp(str);
-//     // console.log(str);
-//     allDataAry.forEach(function(el,idx){
-//         if(reg.test(el.name)){
-//             console.log(el);
-//         }
-//     })
 
-// }
+getEnterStore.children[0].addEventListener('keyup',function(e){
+    if(e.code=="Enter"&&enterStoreStatus==1){
+        filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
+        console.log(partOfDistrctAry);
+        renderPopUp();
+        renderInDataPlace(partOfDistrctAry,seachTypeStr);
+    }
+});
+
+
+
 
 
 
@@ -131,6 +125,7 @@ getSearchType.addEventListener('click',function(e){
     addDNone();
     switch (e.target.value) {
         case "district-search":{
+            console.log();
             seachTypeStr="district";
             getChoiceArea.classList.remove("d-none");
         break;
@@ -159,10 +154,11 @@ function processData(data){
     // let foodAry = [];
     console.log(data);
 
-    
+    //將取得的資料的值做出對應的下拉式選單
     putInOption(data,getChoiceFood,'category');
     putInOption(data,getChoiceService,'services');
     putInOption(data,getChoiceArea,'district');
+    
 
     // function getAllDistrictName(data){
     //     const afterDataSet = new Set();
