@@ -86,19 +86,23 @@ const getOption1 = document.getElementById('option1');
 getOption1.checked = true;
 seachTypeStr = 'district';
 
-getEnterStore.children[0].addEventListener('compositionend',function(e){
-    enterStoreStatus=1;
-});
+getEnterStore.addEventListener('submit',function(e){
+    e.preventDefault();
+    filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
+    renderPopUp();
+    renderInDataPlace(partOfDistrctAry,seachTypeStr);
+        }
+);
 
 
-getEnterStore.children[0].addEventListener('keyup',function(e){
-    if(e.code=="Enter"&&enterStoreStatus==1){
-        filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
-        console.log(partOfDistrctAry);
-        renderPopUp();
-        renderInDataPlace(partOfDistrctAry,seachTypeStr);
-    }
-});
+// getEnterStore.addEventListener('keyup',function(e){
+//     if(e.code=="Enter"&&enterStoreStatus==1){
+//         filterAfterAddEvent(seachTypeStr,e); //得到區域的陣列
+//         console.log(partOfDistrctAry);
+//         renderPopUp();
+//         renderInDataPlace(partOfDistrctAry,seachTypeStr);
+//     }
+// });
 
 
 
