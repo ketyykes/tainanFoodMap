@@ -84,7 +84,6 @@ getOption1.checked = true;
 seachTypeStr = "district";
 
 getEnterStore.addEventListener("submit", function (e) {
-	console.log(e.target);
 	e.preventDefault();
 	filterAfterAddEvent(seachTypeStr, e); //得到區域的陣列
 	renderPopUp();
@@ -100,7 +99,7 @@ getEnterStore.addEventListener("submit", function (e) {
 //     }
 // });
 
-console.log(getDataPlace);
+// console.log(getDataPlace);
 getSearchType.addEventListener("click", function (e) {
 	function addDNone() {
 		getChoiceArea.classList.add("d-none");
@@ -146,7 +145,7 @@ function processData(data) {
 	// let districtAry = [];
 	// let servicesAry =[];
 	// let foodAry = [];
-	console.log(data);
+	// console.log(data);
 
 	//將取得的資料的值做出對應的下拉式選單
 	putInOption(data, getChoiceFood, "category");
@@ -361,7 +360,7 @@ function filterAfterAddEvent(elObj, e) {
 //監聽事件觸發某區域、服務或是美食類型所做的事情
 function renderInMap(e) {
 	filterAfterAddEvent(seachTypeStr, e); //得到區域的陣列
-	console.log(partOfDistrctAry);
+	// console.log(partOfDistrctAry);
 	// filterAfterAddEvent("services",e);
 	// console.log(partOfDistrctAry,"district");
 	renderPopUp();
